@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaShop - Product Landing Page</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+      background:#f4f7fb;
+      color:#333;
+    }
+
+    header{
+      background:#0f172a;
+      color:#fff;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:18px 8%;
+      position:sticky;
+      top:0;
+    }
+
+    header h2{
+      color:#38bdf8;
+    }
+
+    nav a{
+      color:#fff;
+      text-decoration:none;
+      margin-left:25px;
+      transition:.3s;
+    }
+
+    nav a:hover{
+      color:#38bdf8;
+    }
+
+    .hero{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:70px 8%;
+      min-height:90vh;
+      flex-wrap:wrap;
+    }
+
+    .hero-text{
+      flex:1;
+      min-width:300px;
+    }
+
+    .hero-text h1{
+      font-size:50px;
+      margin-bottom:20px;
+      color:#0f172a;
+    }
+
+    .hero-text p{
+      font-size:18px;
+      color:#555;
+      line-height:1.8;
+      margin-bottom:30px;
+    }
+
+    .btn{
+      background:#2563eb;
+      color:white;
+      padding:14px 30px;
+      text-decoration:none;
+      border-radius:8px;
+      font-size:18px;
+      transition:.3s;
+    }
+
+    .btn:hover{
+      background:#1d4ed8;
+    }
+
+    .hero img{
+      width:450px;
+      max-width:100%;
+    }
+
+    .features{
+      padding:60px 8%;
+      background:white;
+      text-align:center;
+    }
+
+    .features h2{
+      margin-bottom:40px;
+      color:#0f172a;
+      font-size:36px;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:25px;
+    }
+
+    .card{
+      background:#f8fafc;
+      padding:30px;
+      border-radius:12px;
+      transition:.3s;
+      box-shadow:0 5px 15px rgba(0,0,0,.08);
+    }
+
+    .card:hover{
+      transform:translateY(-8px);
+    }
+
+    .card h3{
+      margin-bottom:15px;
+      color:#2563eb;
+    }
+
+    .products{
+      padding:60px 8%;
+    }
+
+    .products h2{
+      text-align:center;
+      margin-bottom:40px;
+      font-size:36px;
+    }
+
+    .product-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:25px;
+    }
+
+    .product{
+      background:white;
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:0 5px 15px rgba(0,0,0,.1);
+    }
+
+    .product img{
+      width:100%;
+      height:220px;
+      object-fit:cover;
+    }
+
+    .product-content{
+      padding:20px;
+    }
+
+    .price{
+      color:#16a34a;
+      font-size:22px;
+      margin:12px 0;
+      font-weight:bold;
+    }
+
+    .buy{
+      width:100%;
+      border:none;
+      background:#2563eb;
+      color:white;
+      padding:12px;
+      border-radius:6px;
+      cursor:pointer;
+      font-size:16px;
+    }
+
+    .buy:hover{
+      background:#1d4ed8;
+    }
+
+    footer{
+      background:#0f172a;
+      color:white;
+      text-align:center;
+      padding:20px;
+      margin-top:50px;
+    }
+
+    @media(max-width:768px){
+      .hero{
+        text-align:center;
+      }
+
+      .hero-text h1{
+        font-size:38px;
+      }
+
+      header{
+        flex-direction:column;
+      }
+
+      nav{
+        margin-top:15px;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+<header>
+  <h2>NovaShop</h2>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Products</a>
+    <a href="#">Features</a>
+    <a href="#">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+
+  <div class="hero-text">
+    <h1>Premium Wireless Headphones</h1>
+
+    <p>
+      Experience immersive sound, active noise cancellation,
+      premium comfort, and 40-hour battery life. Designed
+      for music lovers and professionals.
+    </p>
+
+    <a href="#" class="btn">Shop Now</a>
+  </div>
+
+  <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=900" alt="Headphones">
+
+</section>
+
+<section class="features">
+
+  <h2>Why Choose Us?</h2>
+
+  <div class="cards">
+
+    <div class="card">
+      <h3>🎵 HD Sound</h3>
+      <p>Enjoy crystal clear audio with premium drivers.</p>
+    </div>
+
+    <div class="card">
+      <h3>🔋 Long Battery</h3>
+      <p>Up to 40 hours of uninterrupted listening.</p>
+    </div>
+
+    <div class="card">
+      <h3>🚚 Free Delivery</h3>
+      <p>Fast and free shipping across the country.</p>
+    </div>
+
+  </div>
+
+</section>
+
+<section class="products">
+
+<h2>Featured Products</h2>
+
+<div class="product-grid">
+
+<div class="product">
+
+<img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800">
+
+<div class="product-content">
+<h3>Wireless Headphones</h3>
+<p>Premium quality with noise cancellation.</p>
+<div class="price">$99</div>
+<button class="buy">Buy Now</button>
+</div>
+
+</div>
+
+<div class="product">
+
+<img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800">
+
+<div class="product-content">
+<h3>Running Shoes</h3>
+<p>Comfortable sports shoes for daily workouts.</p>
+<div class="price">$79</div>
+<button class="buy">Buy Now</button>
+</div>
+
+</div>
+
+<div class="product">
+
+<img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800">
+
+<div class="product-content">
+<h3>Smart Watch</h3>
+<p>Fitness tracking with stylish modern design.</p>
+<div class="price">$129</div>
+<button class="buy">Buy Now</button>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<footer>
+  <p>© 2026 NovaShop | Designed with HTML & CSS</p>
+</footer>
+
+</body>
+</html>
