@@ -3,7 +3,11 @@ import http from 'http';
 const server = http.createServer((req, res) => {
 
     if (req.url === "/") {
-        res.end("<h1>Home Page</h1>");
+        res.write("<h1>Home Page</h1>");
+        res.end(`
+            <a href="/product">Product Page</a>
+            <a href="/contact">Contact Us</a>
+        `);
     } else if (req.url === "/product") {
         res.writeHead(`
             <h1>Iphone XL</h1>
@@ -18,7 +22,7 @@ const server = http.createServer((req, res) => {
             res.statusCode = 404;
             res.end(`
                 <h1>Page Not Found</h1>
-                <a href="/">HOme</a>
+                <a href="/">Home</a>
             `);
         }
 });
