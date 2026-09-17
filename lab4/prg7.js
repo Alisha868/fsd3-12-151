@@ -8,6 +8,14 @@ const server = http.createServer((req, res) => {
     }
 
     else if((req.url === "/") && (req.method === "POST")) {
+        let body ='';
+        req.on('data', (chunk) => {
+            body += chunk;
+        })
+        req.on('end',() => {
+            const user = JSON.parse(body);
+            console.log(user);
+        })
         res.end(JSON.stringify({ message: "add user" }));
     }
     else if((req.url === '/api/users') && (req.method === "GET")) {
@@ -32,3 +40,4 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(3000, () => console.log("prg7 is running..."));
+
