@@ -1,10 +1,10 @@
 import http from 'http'
-import { getUsers } from "./users.js";
+import { addUser, getAllUsers, getUserById, updateUser,deleteUser} from "./users.js";
 
 const server = http.createServer((req, res) => {
 
     if((req.url === "/") && (req.method === "GET")) {
-        res.end(JSON.stringify({ message: "all users" }));
+        res.end(JSON.stringify( getAllUsers() ));
     }
 
     else if((req.url === "/") && (req.method === "POST")) {
@@ -19,7 +19,7 @@ const server = http.createServer((req, res) => {
         res.end(JSON.stringify({ message: "add user" }));
     }
     else if((req.url === '/api/users') && (req.method === "GET")) {
-        res.end(JSON.stringify({ message: "all users" }));
+        res.end(JSON.stringify( getAllUsers() ));
     }
     else if((req.url === '/api/users') && (req.method === "POST")) {
         res.end(JSON.stringify({ message: "add user" }));
