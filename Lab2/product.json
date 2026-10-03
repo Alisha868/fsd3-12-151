@@ -1,14 +1,14 @@
 [
   {
-    "id": 940,
-    "name": "aloo",
-    "price": 40,
-    "qty": 10
+    "id": 101,
+    "name": "Mobile",
+    "price": 25000,
+    "qty": 6
   },
   {
-    "id": 367,
-    "name": "baigan",
-    "price": 100,
-    "qty": 54
+    "id": 105,
+    "name": "HP-Laptop",
+    "price": 95000,
+    "qty": 1
   }
 ]

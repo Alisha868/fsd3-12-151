@@ -1,17 +1,10 @@
+import { stat } from "fs/promises";
 
-import {stat} from "fs/promises";
+const fstat = await stat("file1.js");
 
-const fileinfo=async(filename)=>{
-    try{
-        const stats=await stat(filename);
-        console.log(`File Size: ${stats.size} bytes`);
-        console.log(`Created At: ${stats.birthtime}`);
-        console.log(`Last Modified At: ${stats.mtime}`);
-        console.log(`Is File: ${stats.isFile()}`);
-        console.log(`Is Directory: ${stats.isDirectory()}`);
-        console.log(`Is Symbolic Link: ${stats.isSymbolicLink()}`);
-    } catch (error) {
-        console.log(error.message);
-    }
-};
-await fileinfo("hello.txt");
+console.log("file size", fstat.size, "bytes");
+console.log(`is file: ${fstat.isFile()}`);
+console.log(`is folder: ${fstat.isDirectory()}`);
+console.log(`is syslink: ${fstat.isSymbolicLink()}`);
+console.log(`Created on: ${fstat.birthtime}`);
+console.log(`Last Used: ${fstat.atime}`);

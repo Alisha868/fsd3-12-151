@@ -1,7 +1,3 @@
-console.log('mic');
-FS is much easy than others
-Hello my name is alisha
-🤣🤣🤣🤣
-🤣🤣🤣🤣
-🤣🤣🤣🤣
-🤣🤣🤣🤣
+JS is easy
+FS is much easy than others 😃
+FS is much easy than others 😃

@@ -1,50 +1,38 @@
-import {writeFile,appendFile,readFile} from "fs/promises";
+import { readFile, appendFile, writeFile, unlink } from "fs/promises";
 
-const writeData=async()=>{
-    try{
-        await writeFile("hello1.txt", "Hello, World!");
-        console.log("Data written to file successfully.");
-    }
-    catch (error) {
-        console.log(error.message);
-    }
+const readData = async (filename) => {
+  try {
+    const content = await readFile(filename, "utf-8");
+    return content;
+  } catch (e) {
+    console.log(e.message);
+    console.log("File not found");
+  } finally {
+    console.log("Read data finished");
+  }
 };
 
-
-
-const readData=async(filename)=>{
-    try{
-        const content=await readFile(filename, "utf8");
-        console.log(content);
-        console.log("Data read from file successfully.");
-    } catch (error) {
-        console.log(error.message);
-        console.log("File not found");
-    }finally{
-        console.log("Read data finished");
-    }
+const writeData = async (filename, content) => {
+  try {
+    await writeFile(filename, content);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+const appendData = async (filename, content) => {
+  try {
+    await appendFile(filename, content);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+const deleteFile = async (filename) => {
+  try {
+    await unlink(filename);
+  } catch (error) {
+    console.log("File not found");
+  }
 };
 
-// if a function uses await keyword then that function should be declared as async function
-
-const appendData=async()=>{
-    try{
-        await appendFile("hello1.txt", "\nAppended text!");
-        console.log("Data appended to file successfully.");
-    } catch (error) {
-        console.log(error.message);
-    }
-};
-const deleteFile=async(filename)=>{
-    try{
-        await unlink(filename);
-        console.log("Data deleted from file successfully.");
-    } catch (error) {
-        console.log(error.message);
-    }
-};
-
-await readData("hello.txt");
-
-// writeData();
-// readData();
+const data = await readData("file1.js");
+console.log(data);

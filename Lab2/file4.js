@@ -1,7 +1,10 @@
-import {mkdir} from "fs/promises";
+import { mkdir, rm } from "fs/promises";
 
+// create recursive directory
+// await mkdir("uploads/resume", { recursive: true });
 
-await mkdir("uploads/resume", { recursive: true});
-await mkdir("/uploads/images");
+//create single directory
+// await mkdir("uploads/images");
 
-await rm("uploads",{recursive:true});
+// remove directory
+await rm("uploads", { recursive: true });
