@@ -1,9 +1,22 @@
-import { readFile, appendFile, writeFile, unlink } from "fs/promises";
+import { writeFile, appendFile, readFile } from "fs/promises";
 
-const readData = async (filename) => {
+const appendData = async (file2, content) => {
   try {
-    const content = await readFile(filename, "utf-8");
-    return content;
+    return await appendFile(file2, content);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+const writeData = async (file2, content) => {
+  try {
+    return await writeFile(file2, content);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+const readData = async (file2) => {
+  try {
+    return await readFile(file2, "utf-8");
   } catch (e) {
     console.log(e.message);
     console.log("File not found");
@@ -12,27 +25,15 @@ const readData = async (filename) => {
   }
 };
 
-const writeData = async (filename, content) => {
+const deleteFile = async (file2) => {
   try {
-    await writeFile(filename, content);
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-const appendData = async (filename, content) => {
-  try {
-    await appendFile(filename, content);
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-const deleteFile = async (filename) => {
-  try {
-    await unlink(filename);
+    await unlink(file2);
   } catch (error) {
     console.log("File not found");
   }
 };
 
-const data = await readData("file1.js");
+const data = await readData("file3.js");
 console.log(data);
+
+//If a function uses an awaits keyword then the function must be an async.
