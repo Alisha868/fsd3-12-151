@@ -1,10 +1,10 @@
 import { mkdir, rm } from "fs/promises";
 
-// create recursive directory
-// await mkdir("uploads/resume", { recursive: true });
+//Create recursive directory
+await mkdir("uploads/resume", { recursive: true });
 
-//create single directory
-// await mkdir("uploads/images");
+//Create single directory
+await mkdir("uploads/images");
 
-// remove directory
+//remove directory
 await rm("uploads", { recursive: true });
