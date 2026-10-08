@@ -14,7 +14,7 @@ let sortedProducts = products.map(({name,image,price,id})=>({
 let sortedProducts = products.map((item)=>
 res.status(200).json({count:sortedProducts.length,data:sortedProducts})
 })
-
+app.get("/api/products/:productID", (req,res) => {
 app.use((req,res)=>{
     res.status(404).send("<h1>Page not found");
 });
