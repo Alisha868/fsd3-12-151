@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Learning Hub | Premier Online Coaching & Test Prep</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f3ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        },
+                        emerald: {
+                            500: '#10b981',
+                            600: '#059669',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #4f46e5 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.08) 0%, rgba(16, 185, 129, 0.05) 90.1%);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-500 selection:text-white flex flex-col min-h-screen">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- Syllabus & Course Details Modal -->
+    <div id="course-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl transition-all transform duration-300 scale-100 p-6 md:p-8 relative">
+            <button onclick="closeCourseModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 bg-slate-100 p-2 rounded-full transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div id="modal-content">
+                <!-- Dynamically Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar (Visible across all pages) -->
+    <header class="sticky top-0 z-40 glass-nav border-b border-slate-200/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-brand-600 to-emerald-500 flex items-center justify-center text-white shadow-lg shadow-brand-500/20">
+                        <i class="fa-solid fa-graduation-cap text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-extrabold tracking-tight text-slate-900">Apex<span class="gradient-text"> Hub</span></span>
+                        <span class="block text-[10px] font-semibold uppercase tracking-widest text-slate-400 -mt-1">Online Academy</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center gap-1 lg:gap-2">
+                    <button onclick="navigateTo('home')" class="nav-link px-4 py-2 rounded-full text-sm font-semibold text-slate-600 hover:text-brand-600 hover:bg-slate-100/80 transition-all active" data-page="home">Home</button>
+                    <button onclick="navigateTo('courses')" class="nav-link px-4 py-2 rounded-full text-sm font-semibold text-slate-600 hover:text-brand-600 hover:bg-slate-100/80 transition-all" data-page="courses">Courses</button>
+                    <button onclick="navigateTo('about')" class="nav-link px-4 py-2 rounded-full text-sm font-semibold text-slate-600 hover:text-brand-600 hover:bg-slate-100/80 transition-all" data-page="about">About Us</button>
+                    <button onclick="navigateTo('testimonials')" class="nav-link px-4 py-2 rounded-full text-sm font-semibold text-slate-600 hover:text-brand-600 hover:bg-slate-100/80 transition-all" data-page="testimonials">Results & Reviews</button>
+                    <button onclick="navigateTo('contact')" class="nav-link px-4 py-2 rounded-full text-sm font-semibold text-slate-600 hover:text-brand-600 hover:bg-slate-100/80 transition-all" data-page="contact">Contact Us</button>
+                </nav>
+
+                <!-- Action Button & Mobile Hamburger -->
+                <div class="flex items-center gap-3">
+                    <button onclick="navigateTo('contact'); setDemoIntent()" class="hidden sm:inline-flex items-center gap-2 bg-gradient-to-r from-brand-600 to-indigo-700 text-white px-5 py-2.5 rounded-full font-semibold text-sm shadow-md shadow-brand-500/20 hover:shadow-lg hover:shadow-brand-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                        <i class="fa-solid fa-calendar-check text-xs"></i>
+                        <span>Book Free Demo</span>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-b border-slate-200 bg-white/95 backdrop-blur-md px-4 pt-2 pb-6 space-y-2">
+            <button onclick="navigateTo('home')" class="mobile-nav-link block w-full text-left px-4 py-2.5 rounded-xl font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-600">Home</button>
+            <button onclick="navigateTo('courses')" class="mobile-nav-link block w-full text-left px-4 py-2.5 rounded-xl font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-600">Courses</button>
+            <button onclick="navigateTo('about')" class="mobile-nav-link block w-full text-left px-4 py-2.5 rounded-xl font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-600">About Us</button>
+            <button onclick="navigateTo('testimonials')" class="mobile-nav-link block w-full text-left px-4 py-2.5 rounded-xl font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-600">Results & Reviews</button>
+            <button onclick="navigateTo('contact')" class="mobile-nav-link block w-full text-left px-4 py-2.5 rounded-xl font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-600">Contact Us</button>
+            <div class="pt-2">
+                <button onclick="navigateTo('contact'); setDemoIntent()" class="w-full flex items-center justify-center gap-2 bg-brand-600 text-white py-3 rounded-xl font-semibold shadow-md">
+                    <i class="fa-solid fa-calendar-check text-xs"></i>
+                    Book Free Demo Class
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA WITH 5 PAGES -->
+    <main class="flex-grow">
+
+        <!-- PAGE 1: HOME -->
+        <section id="page-home" class="page-view animate-fadeIn">
+            
+            <!-- Hero Section -->
+            <div class="hero-gradient pt-12 pb-20 md:py-24 border-b border-slate-100">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid lg:grid-cols-12 gap-12 items-center">
+                        
+                        <!-- Left Content -->
+                        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                            <div class="inline-flex items-center gap-2 bg-indigo-50 border border-indigo-100 text-brand-700 px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold shadow-xs">
+                                <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-ping"></span>
+                                <span class="flex h-2 w-2 rounded-full bg-emerald-500 -ml-4"></span>
+                                <span>Admissions Open for 2026-2027 Batches</span>
+                            </div>
+                            
+                            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-[1.15] tracking-tight">
+                                Unlock Your Academic Potential with <span class="gradient-text">Top 1% Mentors</span>
+                            </h1>
+                            
+                            <p class="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                                Live interactive online classes, personalized 1-on-1 doubt solving, real-time analytics, and proven exam strategies for Competitive Exams, STEM, & Tech Skills.
+                            </p>
+
+                            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                                <button onclick="navigateTo('courses')" class="w-full sm:w-auto px-8 py-4 bg-brand-600 hover:bg-brand-700 text-white rounded-full font-bold text-base shadow-lg shadow-brand-500/25 transition-all transform hover:-translate-y-0.5">
+                                    Explore All Courses <i class="fa-solid fa-arrow-right ml-2 text-sm"></i>
+                                </button>
+                                <button onclick="navigateTo('contact'); setDemoIntent()" class="w-full sm:w-auto px-8 py-4 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 rounded-full font-bold text-base transition-all shadow-sm">
+                                    Book Free Demo Class
+                                </button>
+                            </div>
+
+                            <!-- Trust Badges -->
+                            <div class="pt-6 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs sm:text-sm text-slate-500 font-medium">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-circle-check text-emerald-500 text-base"></i> No Credit Card Required
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-circle-check text-emerald-500 text-base"></i> Recorded Class Backup
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-circle-check text-emerald-500 text-base"></i> 100% Refund Guarantee
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Banner Graphic Card -->
+                        <div class="lg:col-span-5 relative">
+                            <div class="relative mx-auto max-w-md lg:max-w-none">
+                                <!-- Background Glow -->
+                                <div class="absolute -inset-1 bg-gradient-to-r from-brand-500 to-emerald-500 rounded-3xl blur-xl opacity-30 animate-pulse"></div>
+                                
+                                <div class="relative bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+                                    <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                                                <i class="fa-solid fa-signal text-sm"></i>
+                                            </div>
+                                            <div>
+                                                <p class="text-xs text-slate-400 font-medium uppercase">Live Learning Room</p>
+                                                <h4 class="text-sm font-bold text-slate-800">Advanced Mathematics 2026</h4>
+                                            </div>
+                                        </div>
+                                        <span class="bg-red-500/10 text-red-500 text-xs px-2.5 py-1 rounded-full font-bold uppercase tracking-wider flex items-center gap-1.5">
+                                            <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span> Live
+                                        </span>
+                                    </div>
+
+                                    <!-- Mock Stream Canvas Card -->
+                                    <div class="bg-slate-900 rounded-2xl p-5 text-white relative overflow-hidden min-h-[180px] flex flex-col justify-between">
+                                        <div class="flex items-center justify-between z-10">
+                                            <span class="bg-slate-800/80 backdrop-blur text-xs px-3 py-1 rounded-lg border border-slate-700">Topic: Calculus & Vectors</span>
+                                            <span class="text-xs text-emerald-400 font-semibold"><i class="fa-solid fa-user-group text-xs mr-1"></i> 1,420 Active Students</span>
+                                        </div>
+                                        <div class="z-10 my-4">
+                                            <p class="text-xs text-indigo-300 font-mono mb-1">f'(x) = lim(h->0) [f(x+h) - f(x)] / h</p>
+                                            <p class="text-sm font-medium text-slate-200">"Mastering derivative principles with step-by-step visual proofs."</p>
+                                        </div>
+                                        <div class="flex items-center justify-between z-10 pt-2 border-t border-slate-800">
+                                            <div class="flex items-center gap-2">
+                                                <div class="w-7 h-7 rounded-full bg-indigo-500 text-xs flex items-center justify-center font-bold">DR</div>
+                                                <span class="text-xs text-slate-300">Dr. Rajesh Verma (IIT Delhi)</span>
+                                            </div>
+                                            <div class="text-xs text-amber-400 flex items-center gap-1">
+                                                <i class="fa-solid fa-star"></i> 4.9
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Floating Metric Card -->
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100 flex items-center gap-3">
+                                            <div class="w-9 h-9 rounded-lg bg-indigo-100 text-brand-600 flex items-center justify-center font-bold">
+                                                <i class="fa-solid fa-trophy text-sm"></i>
+                                            </div>
+                                            <div>
+                                                <p class="text-xs text-slate-400 font-medium">Rank Holders</p>
+                                                <p class="text-sm font-bold text-slate-800">AIR Top 100</p>
+                                            </div>
+                                        </div>
+                                        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100 flex items-center gap-3">
+                                            <div class="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold">
+                                                <i class="fa-solid fa-clock-rotate-left text-sm"></i>
+                                            </div>
+                                            <div>
+                                                <p class="text-xs text-slate-400 font-medium">Doubt Resolution</p>
+                                                <p class="text-sm font-bold text-slate-800">&lt; 15 Mins</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="bg-slate-900 py-12 text-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                        <div class="space-y-1">
+                            <p class="text-3xl sm:text-4xl font-extrabold text-emerald-400">12,500+</p>
+                            <p class="text-xs sm:text-sm text-slate-400 font-medium uppercase tracking-wider">Enrolled Students</p>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-3xl sm:text-4xl font-extrabold text-brand-500">98.4%</p>
+                            <p class="text-xs sm:text-sm text-slate-400 font-medium uppercase tracking-wider">Exam Success Rate</p>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-3xl sm:text-4xl font-extrabold text-amber-400">65+</p>
+                            <p class="text-xs sm:text-sm text-slate-400 font-medium uppercase tracking-wider">Master Tutors & PhDs</p>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-3xl sm:text-4xl font-extrabold text-purple-400">4.9 / 5.0</p>
+                            <p class="text-xs sm:text-sm text-slate-400 font-medium uppercase tracking-wider">Student Satisfaction</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Why Choose Us / Key Pillars -->
+            <div class="py-20 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-3xl mx-auto mb-16">
+                        <h2 class="text-xs font-extrabold text-brand-600 uppercase tracking-widest mb-2">Why Apex Hub Stand Out</h2>
+                        <h3 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Engineered for Your Ultimate Academic Breakthrough</h3>
+                        <p class="mt-4 text-slate-600">We combine cutting-edge live classroom technology with time-tested teaching methodologies to deliver exceptional learning outcomes.</p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        
+                        <!-- Feature Card 1 -->
+                        <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-brand-200 hover:shadow-xl transition-all group">
+                            <div class="w-12 h-12 rounded-2xl bg-brand-100 text-brand-600 flex items-center justify-center text-xl font-bold mb-5 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-video"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-slate-900 mb-2">Interactive Live Classes</h4>
+                            <p class="text-slate-600 text-sm leading-relaxed">High-definition interactive streaming with dynamic whiteboards, polling, and direct audio interaction with faculty.</p>
+                        </div>
+
+                        <!-- Feature Card 2 -->
+                        <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-200 hover:shadow-xl transition-all group">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl font-bold mb-5 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-comments"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-slate-900 mb-2">24/7 Doubt Resolution</h4>
+                            <p class="text-slate-600 text-sm leading-relaxed">Stuck on a tricky problem at 2 AM? Snap a picture and receive step-by-step video solutions from expert mentors.</p>
+                        </div>
+
+                        <!-- Feature Card 3 -->
+                        <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-amber-200 hover:shadow-xl transition-all group">
+                            <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl font-bold mb-5 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-slate-900 mb-2">AI Performance Analytics</h4>
+                            <p class="text-slate-600 text-sm leading-relaxed">Track speed, accuracy, and subject weaknesses with detailed diagnostic test reports after every mock exam.</p>
+                        </div>
+
+                        <!-- Feature Card 4 -->
+                        <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-purple-200 hover:shadow-xl transition-all group">
+                            <div class="w-12 h-12 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl font-bold mb-5 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-book-open"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-slate-900 mb-2">Curated Study Material</h4>
+                            <p class="text-slate-600 text-sm leading-relaxed">Receive updated physical modules, concise formula handbooks, and topic-wise practice question banks.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Courses Grid Section -->
+            <div class="py-20 bg-slate-50 border-t border-slate-200/60">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                        <div>
+                            <h2 class="text-xs font-extrabold text-brand-600 uppercase tracking-widest mb-2">Explore Flagship Programs</h2>
+                            <h3 class="text-3xl font-extrabold text-slate-900">Featured Courses for 2026 Batch</h3>
+                        </div>
+                        <button onclick="navigateTo('courses')" class="mt-4 md:mt-0 text-brand-600 font-bold hover:text-brand-700 flex items-center gap-2 group">
+                            View All 15+ Courses <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
+
+                    <!-- Course Showcase Grid (3 Highlights) -->
+                    <div class="grid md:grid-cols-3 gap-8" id="featured-courses-container">
+                        <!-- Populated by JS for quick dynamic sync -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Top Rankers Highlight Banner -->
+            <div class="py-16 bg-gradient-to-r from-brand-900 via-indigo-900 to-slate-900 text-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid lg:grid-cols-12 gap-8 items-center">
+                        <div class="lg:col-span-8">
+                            <span class="bg-amber-400 text-slate-900 text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">Hall of Fame 2025-2026</span>
+                            <h3 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Celebrating Our Top Percentile Rankers</h3>
+                            <p class="text-slate-300 text-base leading-relaxed">Over 450+ students secured positions in Top 1% nationally in JEE, NEET, SAT, and UPSC competitive examinations last year.</p>
+                        </div>
+                        <div class="lg:col-span-4 text-left lg:text-right">
+                            <button onclick="navigateTo('testimonials')" class="px-7 py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-full shadow-lg transition-all">
+                                See Full Rankers List <i class="fa-solid fa-trophy ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- PAGE 2: COURSES CATALOG -->
+        <section id="page-courses" class="page-view hidden animate-fadeIn py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Page Header -->
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Comprehensive Online Learning Programs</h1>
+                    <p class="mt-3 text-slate-600 text-base">Select from world-class courses designed by top faculty. Filter by domain or search by topic.</p>
+                </div>
+
+                <!-- Filter & Search Bar -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-10 flex flex-col md:flex-row items-center justify-between gap-4">
+                    
+                    <!-- Category Tabs -->
+                    <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0" id="category-filters">
+                        <button onclick="filterCourseCategory('all')" class="cat-btn bg-brand-600 text-white px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap active-cat" data-cat="all">All Courses</button>
+                        <button onclick="filterCourseCategory('competitive')" class="cat-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap" data-cat="competitive">Competitive Exams</button>
+                        <button onclick="filterCourseCategory('stem')" class="cat-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap" data-cat="stem">STEM & Science</button>
+                        <button onclick="filterCourseCategory('tech')" class="cat-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap" data-cat="tech">Coding & Tech</button>
+                        <button onclick="filterCourseCategory('humanities')" class="cat-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap" data-cat="humanities">Humanities</button>
+                    </div>
+
+                    <!-- Search Box -->
+                    <div class="relative w-full md:w-72">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                        <input type="text" id="course-search-input" onkeyup="searchCourses()" placeholder="Search courses or topics..." class="w-full pl-10 pr-4 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-sm">
+                    </div>
+                </div>
+
+                <!-- Course Cards Grid -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="all-courses-grid">
+                    <!-- Populated dynamically by JS -->
+                </div>
+
+                <!-- Empty State Message -->
+                <div id="no-courses-msg" class="hidden text-center py-16">
+                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-slate-400 text-2xl mb-4">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-700">No matching courses found</h3>
+                    <p class="text-slate-500 text-sm mt-1">Try resetting your filter or searching for another term.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PAGE 3: ABOUT US -->
+        <section id="page-about" class="page-view hidden animate-fadeIn py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+                
+                <!-- Header Banner -->
+                <div class="text-center max-w-3xl mx-auto">
+                    <span class="text-xs font-extrabold text-brand-600 uppercase tracking-widest">Our Mission & Legacy</span>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">Empowering Learners Everywhere with Quality Coaching</h1>
+                    <p class="mt-4 text-slate-600 text-base leading-relaxed">Apex Learning Hub was founded in 2018 with a singular objective: democratizing top-tier competitive coaching through smart technology, expert faculty mentorship, and affordable education.</p>
+                </div>
+
+                <!-- Mission & Vision Cards -->
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="p-8 bg-white rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                        <div class="w-12 h-12 bg-indigo-50 text-brand-600 rounded-xl flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Our Mission</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">To provide structured, high-yield conceptual clarity and personalized learning pathways so every student achieves their dream university and career.</p>
+                    </div>
+
+                    <div class="p-8 bg-white rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                        <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-eye"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Our Vision</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">To become global leaders in interactive online education by blending AI-powered diagnostic insights with world-class human mentorship.</p>
+                    </div>
+
+                    <div class="p-8 bg-white rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                        <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">Core Values</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">Integrity, continuous innovation, empathy for student struggles, and an uncompromising commitment to academic rigor.</p>
+                    </div>
+                </div>
+
+                <!-- Master Faculty Team -->
+                <div>
+                    <div class="text-center max-w-2xl mx-auto mb-12">
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Meet Our Legendary Mentors</h2>
+                        <p class="text-slate-600 text-sm mt-2">Learn directly from alumni of IITs, AIIMS, Stanford, and Oxford with decades of teaching mastery.</p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        
+                        <!-- Faculty 1 -->
+                        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all text-center p-6">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400" alt="Dr. Anita Roy" class="w-24 h-24 rounded-full mx-auto object-cover mb-4 ring-4 ring-brand-50">
+                            <h4 class="font-bold text-slate-900 text-lg">Dr. Anita Roy</h4>
+                            <p class="text-brand-600 text-xs font-semibold uppercase tracking-wider mb-2">Head of Physics & STEM</p>
+                            <p class="text-slate-500 text-xs mb-4">Ex-IIT Bombay | 15+ Yrs Exp.</p>
+                            <span class="inline-block bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-medium">10,000+ Students Mentored</span>
+                        </div>
+
+                        <!-- Faculty 2 -->
+                        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all text-center p-6">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400" alt="Prof. Vikramaditya" class="w-24 h-24 rounded-full mx-auto object-cover mb-4 ring-4 ring-emerald-50">
+                            <h4 class="font-bold text-slate-900 text-lg">Prof. Vikramaditya</h4>
+                            <p class="text-emerald-600 text-xs font-semibold uppercase tracking-wider mb-2">Senior Math Mentor</p>
+                            <p class="text-slate-500 text-xs mb-4">M.Sc Math (Gold Medalist) | Author</p>
+                            <span class="inline-block bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-medium">AIR 1 Producer 2023</span>
+                        </div>
+
+                        <!-- Faculty 3 -->
+                        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all text-center p-6">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400" alt="Dr. Sanya Kapoor" class="w-24 h-24 rounded-full mx-auto object-cover mb-4 ring-4 ring-amber-50">
+                            <h4 class="font-bold text-slate-900 text-lg">Dr. Sanya Kapoor</h4>
+                            <p class="text-amber-600 text-xs font-semibold uppercase tracking-wider mb-2">Organic Chemistry Specialist</p>
+                            <p class="text-slate-500 text-xs mb-4">Ph.D. AIIMS New Delhi | 12+ Yrs</p>
+                            <span class="inline-block bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-medium">NEET Rank 1 Mentor</span>
+                        </div>
+
+                        <!-- Faculty 4 -->
+                        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all text-center p-6">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400" alt="Rahul Sharma" class="w-24 h-24 rounded-full mx-auto object-cover mb-4 ring-4 ring-purple-50">
+                            <h4 class="font-bold text-slate-900 text-lg">Rahul Sharma</h4>
+                            <p class="text-purple-600 text-xs font-semibold uppercase tracking-wider mb-2">Full Stack Lead</p>
+                            <p class="text-slate-500 text-xs mb-4">Ex-Google Engineer | CS Stanford</p>
+                            <span class="inline-block bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-medium">500+ Placed Tech Grads</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Timeline / Growth Counter -->
+                <div class="bg-slate-900 text-white rounded-3xl p-8 md:p-12">
+                    <h3 class="text-2xl font-bold text-center mb-10">Our Journey of Academic Excellence</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center relative">
+                        <div class="space-y-2">
+                            <div class="text-3xl font-extrabold text-brand-500">2018</div>
+                            <p class="text-xs text-slate-400">Founded with 50 local students in a physical classroom setup.</p>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="text-3xl font-extrabold text-brand-500">2020</div>
+                            <p class="text-xs text-slate-400">Expanded globally with dynamic online portal & 2,000+ batch.</p>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="text-3xl font-extrabold text-brand-500">2023</div>
+                            <p class="text-xs text-slate-400">Awarded "Best Interactive EdTech Platform" in Excellence Summit.</p>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="text-3xl font-extrabold text-brand-500">2026</div>
+                            <p class="text-xs text-slate-400">Crossing 12,000+ active learners across 18 countries.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PAGE 4: TESTIMONIALS & RESULTS -->
+        <section id="page-testimonials" class="page-view hidden animate-fadeIn py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+                
+                <div class="text-center max-w-3xl mx-auto">
+                    <span class="text-xs font-extrabold text-brand-600 uppercase tracking-widest">Proven Track Record</span>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">Rankers Hall of Fame & Student Reviews</h1>
+                    <p class="mt-3 text-slate-600 text-base">Read real stories from top performers who turned their dreams into reality with Apex Learning Hub.</p>
+                </div>
+
+                <!-- Rankers Showcase Cards -->
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-award text-amber-500"></i> Top National Performers (2025-2026)
+                    </h3>
+
+                    <div class="grid md:grid-cols-3 gap-6">
+                        
+                        <!-- Ranker 1 -->
+                        <div class="bg-gradient-to-br from-amber-50/60 to-white p-6 rounded-2xl border border-amber-200/80 shadow-sm relative overflow-hidden">
+                            <span class="absolute top-4 right-4 bg-amber-400 text-slate-900 font-extrabold text-xs px-3 py-1 rounded-full">AIR 4 - JEE Advanced</span>
+                            <div class="flex items-center gap-4 mb-4">
+                                <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=200" alt="Aarav Mehta" class="w-14 h-14 rounded-full object-cover ring-2 ring-amber-400">
+                                <div>
+                                    <h4 class="font-bold text-slate-900">Aarav Mehta</h4>
+                                    <p class="text-xs text-slate-500">JEE 2-Year Intensive Batch</p>
+                                </div>
+                            </div>
+                            <p class="text-slate-700 text-sm italic leading-relaxed">"The 24/7 doubt resolution and weekly AI test reports were my secret weapons. Dr. Roy's physics problem shortcuts saved me crucial minutes during JEE Advanced!"</p>
+                        </div>
+
+                        <!-- Ranker 2 -->
+                        <div class="bg-gradient-to-br from-emerald-50/60 to-white p-6 rounded-2xl border border-emerald-200/80 shadow-sm relative overflow-hidden">
+                            <span class="absolute top-4 right-4 bg-emerald-500 text-white font-extrabold text-xs px-3 py-1 rounded-full">Score 715/720 - NEET</span>
+                            <div class="flex items-center gap-4 mb-4">
+                                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200" alt="Priya Nair" class="w-14 h-14 rounded-full object-cover ring-2 ring-emerald-400">
+                                <div>
+                                    <h4 class="font-bold text-slate-900">Priya Nair</h4>
+                                    <p class="text-xs text-slate-500">NEET Medical Pinnacle</p>
+                                </div>
+                            </div>
+                            <p class="text-slate-700 text-sm italic leading-relaxed">"Biology diagrams and organic chemistry revision notes provided by Apex Hub were better than any textbook. I cracked AIIMS in my first attempt!"</p>
+                        </div>
+
+                        <!-- Ranker 3 -->
+                        <div class="bg-gradient-to-br from-indigo-50/60 to-white p-6 rounded-2xl border border-brand-200/80 shadow-sm relative overflow-hidden">
+                            <span class="absolute top-4 right-4 bg-brand-600 text-white font-extrabold text-xs px-3 py-1 rounded-full">SAT 1580 / 1600</span>
+                            <div class="flex items-center gap-4 mb-4">
+                                <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=200" alt="Rohan Verma" class="w-14 h-14 rounded-full object-cover ring-2 ring-brand-400">
+                                <div>
+                                    <h4 class="font-bold text-slate-900">Rohan Verma</h4>
+                                    <p class="text-xs text-slate-500">SAT Prep Masterclass</p>
+                                </div>
+                            </div>
+                            <p class="text-slate-700 text-sm italic leading-relaxed">"The Math practice modules accurately reflected the actual exam difficulty. Thanks to Apex, I got accepted into Harvard Computer Science."</p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Verified Student Reviews List -->
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-6">Recent Course Feedback</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        
+                        <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="text-amber-400 text-xs">
+                                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                                </div>
+                                <span class="text-xs text-slate-400">2 days ago</span>
+                            </div>
+                            <p class="text-slate-700 text-sm leading-relaxed">"Full-Stack Web Dev Bootcamp is ridiculously detailed. Rahul Sir explains complex JS async functions with simple animations that make total sense."</p>
+                            <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                                <span class="font-semibold text-slate-800">Siddharth K.</span>
+                                <span>Full-Stack Web Dev Batch</span>
+                            </div>
+                        </div>
+
+                        <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="text-amber-400 text-xs">
+                                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                                </div>
+                                <span class="text-xs text-slate-400">1 week ago</span>
+                            </div>
+                            <p class="text-slate-700 text-sm leading-relaxed">"The recorded backup feature was a lifesaver when I fell sick during revision month. I watched lectures at 1.5x speed and stayed on schedule."</p>
+                            <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                                <span class="font-semibold text-slate-800">Ananya Sen</span>
+                                <span>Class 12th Physics & Math</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PAGE 5: CONTACT US & DEMO ENROLLMENT -->
+        <section id="page-contact" class="page-view hidden animate-fadeIn py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+                
+                <div class="text-center max-w-3xl mx-auto">
+                    <span class="text-xs font-extrabold text-brand-600 uppercase tracking-widest">Get in Touch</span>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2">Book Your Free Demo or Contact Counselors</h1>
+                    <p class="mt-3 text-slate-600 text-base">Have questions regarding fees, course schedules, or faculty? Fill out the form below or talk to us directly.</p>
+                </div>
+
+                <div class="grid lg:grid-cols-12 gap-12 items-start">
+                    
+                    <!-- Left: Contact Form -->
+                    <div class="lg:col-span-7 bg-white rounded-3xl p-8 border border-slate-200 shadow-xl">
+                        <h3 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                            <i class="fa-solid fa-paper-plane text-brand-600 text-lg"></i> Send Us a Message / Book Demo
+                        </h3>
+
+                        <form id="contact-form" onsubmit="handleFormSubmit(event)" class="space-y-5">
+                            <div class="grid sm:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Full Name *</label>
+                                    <input type="text" required placeholder="John Doe" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Phone Number *</label>
+                                    <input type="tel" required placeholder="+1 (555) 000-0000" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-sm">
+                                </div>
+                            </div>
+
+                            <div class="grid sm:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Email Address *</label>
+                                    <input type="email" required placeholder="john@example.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Target Course *</label>
+                                    <select id="form-course-select" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-sm bg-white">
+                                        <option value="IIT-JEE Prep">IIT-JEE Main & Advanced</option>
+                                        <option value="NEET Medical">NEET Medical Pinnacle</option>
+                                        <option value="Full-Stack Web">Full-Stack Web Development</option>
+                                        <option value="SAT & Olympiad">SAT & Olympiad Prep</option>
+                                        <option value="UPSC Foundation">UPSC Civil Services Foundation</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Message or Custom Queries</label>
+                                <textarea rows="4" placeholder="Tell us about your learning goals or ask any doubts..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 text-sm"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-4 bg-gradient-to-r from-brand-600 to-indigo-700 hover:from-brand-700 hover:to-indigo-800 text-white font-bold rounded-xl shadow-lg shadow-brand-500/20 transition-all text-base">
+                                Submit Registration Request <i class="fa-solid fa-paper-plane ml-2 text-sm"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Right: Info Cards & Interactive FAQs -->
+                    <div class="lg:col-span-5 space-y-8">
+                        
+                        <!-- Quick Direct Info -->
+                        <div class="bg-slate-900 text-white p-8 rounded-3xl space-y-6">
+                            <h4 class="text-xl font-bold">Contact Coordinates</h4>
+                            
+                            <div class="space-y-4 text-sm">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 rounded-xl bg-slate-800 text-brand-400 flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-slate-200">Global Headquarter</p>
+                                        <p class="text-slate-400 text-xs mt-0.5">Apex Knowledge Park, Tech Corridor, NY 10001, USA</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 rounded-xl bg-slate-800 text-emerald-400 flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-slate-200">Direct Support Email</p>
+                                        <p class="text-slate-400 text-xs mt-0.5">admissions@apexlearninghub.com</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 rounded-xl bg-slate-800 text-amber-400 flex items-center justify-center shrink-0">
+                                        <i class="fa-solid fa-phone"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-slate-200">Toll-Free Student Helpline</p>
+                                        <p class="text-slate-400 text-xs mt-0.5">+1 (800) 555-APEX / +91 (800) 123-4567</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Accordion -->
+                        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+                            <h4 class="text-lg font-bold text-slate-900 mb-2">Frequently Asked Questions</h4>
+                            
+                            <div class="faq-item border border-slate-100 rounded-2xl overflow-hidden">
+                                <button onclick="toggleFaq(this)" class="w-full p-4 text-left font-semibold text-slate-800 flex items-center justify-between text-sm bg-slate-50/50 hover:bg-slate-50">
+                                    <span>How do live online classes work?</span>
+                                    <i class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-200"></i>
+                                </button>
+                                <div class="faq-answer hidden p-4 text-xs text-slate-600 bg-white border-t border-slate-100 leading-relaxed">
+                                    Students log into our web or mobile application at scheduled class times. You can ask questions via live chat or raise your hand for voice interaction with mentors.
+                                </div>
+                            </div>
+
+                            <div class="faq-item border border-slate-100 rounded-2xl overflow-hidden">
+                                <button onclick="toggleFaq(this)" class="w-full p-4 text-left font-semibold text-slate-800 flex items-center justify-between text-sm bg-slate-50/50 hover:bg-slate-50">
+                                    <span>What if I miss a live lecture?</span>
+                                    <i class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-200"></i>
+                                </button>
+                                <div class="faq-answer hidden p-4 text-xs text-slate-600 bg-white border-t border-slate-100 leading-relaxed">
+                                    Every live class is recorded in High Definition and uploaded to your dashboard within 2 hours, along with faculty PDF whiteboard notes.
+                                </div>
+                            </div>
+
+                            <div class="faq-item border border-slate-100 rounded-2xl overflow-hidden">
+                                <button onclick="toggleFaq(this)" class="w-full p-4 text-left font-semibold text-slate-800 flex items-center justify-between text-sm bg-slate-50/50 hover:bg-slate-50">
+                                    <span>Is there a refund policy available?</span>
+                                    <i class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-200"></i>
+                                </button>
+                                <div class="faq-answer hidden p-4 text-xs text-slate-600 bg-white border-t border-slate-100 leading-relaxed">
+                                    Yes! We offer a 7-day 100% money-back guarantee after batch commencement if you are not satisfied with the course.
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer (Visible on all 5 pages) -->
+    <footer class="bg-slate-900 text-slate-300 pt-16 pb-12 border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800">
+                
+                <!-- Col 1: Brand -->
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
+                        <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white">
+                            <i class="fa-solid fa-graduation-cap text-lg"></i>
+                        </div>
+                        <span class="text-2xl font-extrabold text-white tracking-tight">Apex<span class="text-emerald-400"> Hub</span></span>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed max-w-sm">
+                        Apex Learning Hub is a premier online coaching institute dedicated to transforming education through expert mentorship, live interactive sessions, and comprehensive study systems.
+                    </p>
+                    
+                    <!-- Social Media Links with Hover Scaling -->
+                    <div class="flex items-center gap-3 pt-2">
+                        <a href="#" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-brand-600 text-slate-300 hover:text-white flex items-center justify-center transition-all transform hover:scale-110" title="Facebook">
+                            <i class="fa-brands fa-facebook-f text-sm"></i>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-sky-500 text-slate-300 hover:text-white flex items-center justify-center transition-all transform hover:scale-110" title="Twitter / X">
+                            <i class="fa-brands fa-x-twitter text-sm"></i>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-pink-600 text-slate-300 hover:text-white flex items-center justify-center transition-all transform hover:scale-110" title="Instagram">
+                            <i class="fa-brands fa-instagram text-sm"></i>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-blue-600 text-slate-300 hover:text-white flex items-center justify-center transition-all transform hover:scale-110" title="LinkedIn">
+                            <i class="fa-brands fa-linkedin-in text-sm"></i>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-red-600 text-slate-300 hover:text-white flex items-center justify-center transition-all transform hover:scale-110" title="YouTube">
+                            <i class="fa-brands fa-youtube text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Quick Links -->
+                <div class="space-y-3">
+                    <h4 class="text-white font-bold text-sm uppercase tracking-wider">Quick Links</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><button onclick="navigateTo('home')" class="hover:text-emerald-400 transition-colors">Home Page</button></li>
+                        <li><button onclick="navigateTo('courses')" class="hover:text-emerald-400 transition-colors">Course Directory</button></li>
+                        <li><button onclick="navigateTo('about')" class="hover:text-emerald-400 transition-colors">Faculty & About</button></li>
+                        <li><button onclick="navigateTo('testimonials')" class="hover:text-emerald-400 transition-colors">Student Rankers</button></li>
+                        <li><button onclick="navigateTo('contact')" class="hover:text-emerald-400 transition-colors">Contact & Demo</button></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Popular Courses -->
+                <div class="space-y-3">
+                    <h4 class="text-white font-bold text-sm uppercase tracking-wider">Popular Streams</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="#" onclick="navigateTo('courses')" class="hover:text-emerald-400 transition-colors">IIT-JEE Main & Advanced</a></li>
+                        <li><a href="#" onclick="navigateTo('courses')" class="hover:text-emerald-400 transition-colors">NEET Medical Prep</a></li>
+                        <li><a href="#" onclick="navigateTo('courses')" class="hover:text-emerald-400 transition-colors">Full-Stack Web Development</a></li>
+                        <li><a href="#" onclick="navigateTo('courses')" class="hover:text-emerald-400 transition-colors">SAT & Olympiad Prep</a></li>
+                        <li><a href="#" onclick="navigateTo('courses')" class="hover:text-emerald-400 transition-colors">UPSC Civil Services</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Newsletter -->
+                <div class="space-y-3">
+                    <h4 class="text-white font-bold text-sm uppercase tracking-wider">Stay Updated</h4>
+                    <p class="text-slate-400 text-xs">Subscribe to receive free study strategy PDFs and live demo updates.</p>
+                    <form onsubmit="handleNewsletterSubmit(event)" class="space-y-2">
+                        <input type="email" required placeholder="Enter your email" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-emerald-400">
+                        <button type="submit" class="w-full py-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs rounded-xl transition-colors">
+                            Subscribe Now
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- Bottom Copyright -->
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+                <p>&copy; 2026 Apex Learning Hub Inc. All rights reserved.</p>
+                <div class="flex items-center gap-6">
+                    <a href="#" class="hover:underline">Privacy Policy</a>
+                    <a href="#" class="hover:underline">Terms of Service</a>
+                    <a href="#" class="hover:underline">Refund Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Data Model for Courses
+        const coursesData = [
+            {
+                id: 'jee-2027',
+                title: 'IIT-JEE Main & Advanced 2027 Masterclass',
+                category: 'competitive',
+                badge: 'Bestseller',
+                badgeColor: 'bg-indigo-500',
+                rating: '4.9',
+                reviewsCount: '2,450',
+                duration: '1 Year (Live + Recorded)',
+                instructor: 'Dr. Anita Roy (Ex-IIT Bombay)',
+                price: '$299',
+                origPrice: '$499',
+                description: 'Comprehensive preparation for Physics, Chemistry, and Mathematics designed for aspiring engineers aiming for top rank in JEE 2027.',
+                modules: [
+                    'Module 1: Mechanics, Thermodynamics & Wave Optics',
+                    'Module 2: Organic Mechanisms & Physical Chemistry',
+                    'Module 3: Differential Calculus, Vectors & 3D Geometry',
+                    'Module 4: 50+ Full-Length All India Mock Tests'
+                ]
+            },
+            {
+                id: 'neet-pinnacle',
+                title: 'NEET Medical Pinnacle Batch 2026',
+                category: 'competitive',
+                badge: 'Top Rated',
+                badgeColor: 'bg-emerald-500',
+                rating: '4.9',
+                reviewsCount: '3,120',
+                duration: '1 Year Program',
+                instructor: 'Dr. Sanya Kapoor (Ph.D. AIIMS)',
+                price: '$279',
+                origPrice: '$450',
+                description: 'Complete NCERT-focused mastery for Biology, Chemistry, and Physics with high-yield memory tricks and practical question solving.',
+                modules: [
+                    'Module 1: Human Physiology & Plant Diversity',
+                    'Module 2: Inorganic Chemistry & Reaction Dynamics',
+                    'Module 3: Electrostatics & Modern Physics',
+                    'Module 4: Daily Practice Papers (DPP) & Doubt Sessions'
+                ]
+            },
+            {
+                id: 'fullstack-bootcamp',
+                title: 'Full-Stack Web Development Bootcamp',
+                category: 'tech',
+                badge: 'High Placement',
+                badgeColor: 'bg-purple-500',
+                rating: '4.8',
+                reviewsCount: '1,890',
+                duration: '6 Months (Project Based)',
+                instructor: 'Rahul Sharma (Ex-Google Eng)',
+                price: '$199',
+                origPrice: '$350',
+                description: 'Learn modern Web Development from scratch: HTML5, Tailwind CSS, JavaScript ES6+, React, Node.js, and MongoDB with capstone projects.',
+                modules: [
+                    'Module 1: Modern HTML5, Tailwind CSS & Responsive Design',
+                    'Module 2: JavaScript Logic, Async API Integrations & DOM',
+                    'Module 3: React.js Component Architecture & State Management',
+                    'Module 4: Node.js, Express REST APIs & MongoDB Backend'
+                ]
+            },
+            {
+                id: 'sat-olympiad',
+                title: 'SAT Digital & Olympiad Excellence',
+                category: 'stem',
+                badge: 'Global Standard',
+                badgeColor: 'bg-amber-500',
+                rating: '4.9',
+                reviewsCount: '980',
+                duration: '4 Months Intensive',
+                instructor: 'Prof. Vikramaditya',
+                price: '$149',
+                origPrice: '$250',
+                description: 'Target 1500+ on the Digital SAT with adaptive computer practice tests, Math shortcuts, and evidence-based reading strategies.',
+                modules: [
+                    'Module 1: SAT Math Algebra, Problem Solving & Advanced Math',
+                    'Module 2: Reading & Writing Conventions, Rhetoric Analysis',
+                    'Module 3: 10 Full Digital SAT Simulated Exam Software Tools'
+                ]
+            },
+            {
+                id: 'upsc-foundation',
+                title: 'UPSC Civil Services General Studies Foundation',
+                category: 'humanities',
+                badge: 'New Batch',
+                badgeColor: 'bg-blue-500',
+                rating: '4.7',
+                reviewsCount: '750',
+                duration: '1.5 Years Program',
+                instructor: 'Mentor Board (Retd. IAS Officers)',
+                price: '$349',
+                origPrice: '$600',
+                description: 'In-depth coverage of History, Polity, Economy, Geography, and Current Affairs with regular answer writing evaluations.',
+                modules: [
+                    'Module 1: Indian Constitution, Governance & Social Justice',
+                    'Module 2: Indian Economy & Sustainable Development',
+                    'Module 3: World History & Physical Geography',
+                    'Module 4: Mains Answer Writing & Interview Preparation'
+                ]
+            },
+            {
+                id: 'python-data-science',
+                title: 'Python for Data Science & AI Foundations',
+                category: 'tech',
+                badge: 'Trending',
+                badgeColor: 'bg-cyan-500',
+                rating: '4.8',
+                reviewsCount: '1,120',
+                duration: '3 Months',
+                instructor: 'Dr. Anita Roy',
+                price: '$129',
+                origPrice: '$220',
+                description: 'Master Python programming, Pandas, NumPy, Data Visualization, and foundational Machine Learning models for real-world datasets.',
+                modules: [
+                    'Module 1: Python Fundamentals & Data Structures',
+                    'Module 2: Data Wrangling with Pandas & NumPy',
+                    'Module 3: Machine Learning Algorithms & Scikit-Learn'
+                ]
+            }
+        ];
+
+        // Page Router Function
+        function navigateTo(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page-view');
+            pages.forEach(p => p.classList.add('hidden'));
+
+            // Show selected page
+            const targetPage = document.getElementById(`page-${pageId}`);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+            }
+
+            // Update Desktop Nav Active States
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                if (link.getAttribute('data-page') === pageId) {
+                    link.classList.add('text-brand-600', 'bg-slate-100/80', 'active');
+                    link.classList.remove('text-slate-600');
+                } else {
+                    link.classList.remove('text-brand-600', 'bg-slate-100/80', 'active');
+                    link.classList.add('text-slate-600');
+                }
+            });
+
+            // Close Mobile Menu if open
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Toggle Mobile Navigation
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // Render Course Cards
+        function renderCourseCardHTML(course) {
+            return `
+                <div class="course-card bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all flex flex-col justify-between" data-category="${course.category}" data-title="${course.title.toLowerCase()}">
+                    <div>
+                        <div class="p-6 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="${course.badgeColor} text-white text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full tracking-wider">${course.badge}</span>
+                                <div class="text-amber-400 text-xs font-bold flex items-center gap-1">
+                                    <i class="fa-solid fa-star"></i> ${course.rating} <span class="text-slate-400 font-normal">(${course.reviewsCount})</span>
+                                </div>
+                            </div>
+                            
+                            <h3 class="font-bold text-slate-900 text-lg leading-snug hover:text-brand-600 cursor-pointer transition-colors" onclick="openCourseModal('${course.id}')">${course.title}</h3>
+                            <p class="text-slate-600 text-xs line-clamp-2 leading-relaxed">${course.description}</p>
+                            
+                            <div class="pt-3 border-t border-slate-100 space-y-2 text-xs text-slate-500">
+                                <div class="flex items-center justify-between">
+                                    <span><i class="fa-solid fa-clock mr-1 text-slate-400"></i> ${course.duration}</span>
+                                    <span><i class="fa-solid fa-user-graduate mr-1 text-slate-400"></i> ${course.instructor.split(' ')[0]} ${course.instructor.split(' ')[1]}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-6 pt-0 bg-slate-50/50 flex items-center justify-between border-t border-slate-100">
+                        <div>
+                            <span class="text-xl font-extrabold text-slate-900">${course.price}</span>
+                            <span class="text-xs text-slate-400 line-through ml-1">${course.origPrice}</span>
+                        </div>
+                        <button onclick="openCourseModal('${course.id}')" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold transition-all shadow-sm">
+                            View Syllabus
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initialize Course Grids
+        function initCourses() {
+            const featuredContainer = document.getElementById('featured-courses-container');
+            const allContainer = document.getElementById('all-courses-grid');
+
+            if (featuredContainer) {
+                // Populate first 3 in Home preview
+                featuredContainer.innerHTML = coursesData.slice(0, 3).map(c => renderCourseCardHTML(c)).join('');
+            }
+
+            if (allContainer) {
+                // Populate all in Courses tab
+                allContainer.innerHTML = coursesData.map(c => renderCourseCardHTML(c)).join('');
+            }
+        }
+
+        // Course Category Filter Logic
+        function filterCourseCategory(cat) {
+            // Button Styles
+            const buttons = document.querySelectorAll('.cat-btn');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('data-cat') === cat) {
+                    btn.className = 'cat-btn bg-brand-600 text-white px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap active-cat';
+                } else {
+                    btn.className = 'cat-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap';
+                }
+            });
+
+            // Card Filtering
+            const cards = document.querySelectorAll('#all-courses-grid .course-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const cardCat = card.getAttribute('data-category');
+                if (cat === 'all' || cardCat === cat) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            const noMsg = document.getElementById('no-courses-msg');
+            if (noMsg) {
+                noMsg.classList.toggle('hidden', visibleCount > 0);
+            }
+        }
+
+        // Course Search Logic
+        function searchCourses() {
+            const query = document.getElementById('course-search-input').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('#all-courses-grid .course-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title');
+                if (title.includes(query)) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            const noMsg = document.getElementById('no-courses-msg');
+            if (noMsg) {
+                noMsg.classList.toggle('hidden', visibleCount > 0);
+            }
+        }
+
+        // Open Course Syllabus Modal
+        function openCourseModal(courseId) {
+            const course = coursesData.find(c => c.id === courseId);
+            if (!course) return;
+
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="space-y-6">
+                    <div>
+                        <span class="${course.badgeColor} text-white text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full">${course.badge}</span>
+                        <h2 class="text-2xl font-extrabold text-slate-900 mt-2">${course.title}</h2>
+                        <p class="text-xs text-slate-500 mt-1">Instructor: ${course.instructor} • Rating: ${course.rating} ⭐</p>
+                    </div>
+
+                    <p class="text-sm text-slate-600 leading-relaxed">${course.description}</p>
+
+                    <div class="space-y-3">
+                        <h4 class="font-bold text-slate-900 text-sm">Detailed Syllabus Modules:</h4>
+                        <div class="space-y-2">
+                            ${course.modules.map(m => `
+                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs font-semibold text-slate-700 flex items-center gap-2">
+                                    <i class="fa-solid fa-circle-check text-emerald-500"></i> ${m}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-indigo-50/60 rounded-2xl border border-indigo-100 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs text-slate-500 font-medium">Batch Fee</p>
+                            <p class="text-2xl font-extrabold text-brand-600">${course.price} <span class="text-xs font-normal text-slate-400 line-through">${course.origPrice}</span></p>
+                        </div>
+                        <button onclick="closeCourseModal(); navigateTo('contact'); preselectCourse('${course.title}')" class="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl text-xs transition-all shadow-md">
+                            Enroll Now <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('course-modal').classList.remove('hidden');
+        }
+
+        // Close Course Modal
+        function closeCourseModal() {
+            document.getElementById('course-modal').classList.add('hidden');
+        }
+
+        // FAQ Accordion Toggle
+        function toggleFaq(button) {
+            const answer = button.nextElementSibling;
+            const icon = button.querySelector('i');
+
+            if (answer.classList.contains('hidden')) {
+                answer.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                answer.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Custom Notification Toast System
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const bgColor = type === 'success' ? 'bg-slate-900 border-emerald-500 text-white' : 'bg-red-900 border-red-500 text-white';
+            const icon = type === 'success' ? 'fa-circle-check text-emerald-400' : 'fa-circle-xmark text-red-400';
+
+            toast.className = `pointer-events-auto flex items-center gap-3 px-5 py-3.5 rounded-2xl border shadow-2xl transition-all duration-300 transform translate-y-5 opacity-0 ${bgColor}`;
+            toast.innerHTML = `
+                <i class="fa-solid ${icon} text-lg"></i>
+                <span class="text-xs font-medium">${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            // Animate In
+            setTimeout(() => {
+                toast.classList.remove('translate-y-5', 'opacity-0');
+            }, 10);
+
+            // Remove Toast after 3.5 seconds
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // Form Submission Handlers
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            showToast('Demo request submitted successfully! Counselors will call within 2 hours.');
+            event.target.reset();
+        }
+
+        function handleNewsletterSubmit(event) {
+            event.preventDefault();
+            showToast('Thank you for subscribing to Apex Learning Hub updates!');
+            event.target.reset();
+        }
+
+        function setDemoIntent() {
+            const select = document.getElementById('form-course-select');
+            if (select) select.focus();
+        }
+
+        function preselectCourse(courseTitle) {
+            const select = document.getElementById('form-course-select');
+            if (select) {
+                for (let option of select.options) {
+                    if (courseTitle.toLowerCase().includes(option.value.toLowerCase())) {
+                        option.selected = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Window Init
+        window.onload = function() {
+            initCourses();
+        };
+    </script>
+</body>
+</html>
