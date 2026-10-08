@@ -5,7 +5,13 @@ const app = express();
 
 //returns name,image,price of all products
 app.get("/api/products", (req, res) => {
-let sortedProducts = products.map(({name,image,price,id})=>({name,image,price,id}));
+let sortedProducts = products.map(({name,image,price,id})=>({
+    name,
+    image,
+    price,
+    id,
+}));
+let sortedProducts = products.map((item)=>
 res.status(200).json({count:sortedProducts.length,data:sortedProducts})
 })
 
