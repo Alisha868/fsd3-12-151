@@ -1,9 +1,18 @@
 
 const User = () => {
+  const data = {
+    name: "Alisha Singh",
+    rollNumber: "2500320100151",
+    isAdmin: true,
+    theme: "dark",
+  };
+
   return (
     <>
-      <h2>Alisha Singh</h2>
-      <h3>2500320100151</h3>
+      <h2>{data.name}</h2>
+      <h3>{data.rollNumber}</h3>
+      <p>{data.isAdmin ? "Admin User" : "Normal User"}</p>
+      <p>Theme: {data.theme}</p>
     </>
   );
 };
