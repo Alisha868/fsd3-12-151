@@ -24,7 +24,7 @@ app.get("/api/products/:productID", (req,res) => {
         res.status(200).json({msg:`Product with id ${productID} not found`});
     }
     else{
-        res.status(200).json({msg:"Product Found"})
+        res.status(200).json({msg:"Product Found."})
     }
     }
 
