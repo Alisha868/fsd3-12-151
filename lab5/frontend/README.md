@@ -19,3 +19,8 @@ npm create vite@latest
  4. component can be called as html tags
  eg <App/> <Book/>, <User/> <Product/> <ProductList/>
  5. must be closed during rendering
+
+
+ useState will return two things 
+ 1. variable , a function(the function can be used to update variables value)8
+ it is a function that is available in react and it takes default value of variables
